@@ -3,6 +3,8 @@ package com.media.rest.microservices.mediaservice.controller;
 import com.media.rest.microservices.mediaservice.bean.Audio;
 import com.media.rest.microservices.mediaservice.repository.AudioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +21,14 @@ public class AudioController {
     private AudioRepository repository;
 
     @GetMapping("/audios")
+    @Cacheable(value = "audios")
     // @CrossOrigin(origins = "http://whatsgoodie.org")
     public ResponseEntity<List<Audio>> retrieveAllAudios() {
         return ResponseEntity.ok(repository.findAll());
     }
 
     @GetMapping("/audios/{id}")
+    @Cacheable(value = "audios")
     // @CrossOrigin(origins = "http://whatsgoodie.org")
     public ResponseEntity<Audio> retrieveAudio(@PathVariable long id) {
         Optional<Audio> audio = repository.findById(id);
@@ -35,6 +39,7 @@ public class AudioController {
     }
 
     @PostMapping("/audios")
+    @CacheEvict(value = "audios", allEntries = true)
     // @CrossOrigin(origins = "http://whatsgoodie.org")
     public ResponseEntity<Object> createAudio(@RequestBody Audio body) {
         Audio newAudio = repository.save(body);
@@ -46,6 +51,7 @@ public class AudioController {
     }
 
     @PutMapping("/audios/{id}")
+    @CacheEvict(value = "audios", allEntries = true)
     // @CrossOrigin(origins = "http://whatsgoodie.org")
     public ResponseEntity<Object> updateAudio(@PathVariable long id, @RequestBody Audio body) {
         Optional<Audio> oldAudio = repository.findById(id);
@@ -58,6 +64,7 @@ public class AudioController {
     }
 
     @DeleteMapping("/audios/{id}")
+    @CacheEvict(value = "audios", allEntries = true)
     // @CrossOrigin(origins = "http://whatsgoodie.org")
     public ResponseEntity<Object> deleteAudio(@PathVariable long id) {
         try {

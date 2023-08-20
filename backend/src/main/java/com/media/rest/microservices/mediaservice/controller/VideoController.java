@@ -5,6 +5,8 @@ import com.media.rest.microservices.mediaservice.proxy.YoutubeProxy;
 import com.media.rest.microservices.mediaservice.repository.VideoRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +26,14 @@ public class VideoController {
     private VideoRepository repository;
 
     @GetMapping("/videos")
+    @Cacheable(value = "videos")
     // @CrossOrigin(origins = "https://whatsgoodie.org")
     public ResponseEntity<List<Video>> retrieveAllVideos() {
         return ResponseEntity.ok(repository.findAll());
     }
 
     @GetMapping("/videos/{id}")
+    @Cacheable(value = "videos")
     // @CrossOrigin(origins = "https://whatsgoodie.org")
     public ResponseEntity<Video> retrieveVideo(@PathVariable long id) {
         Optional<Video> video = repository.findById(id);
@@ -40,6 +44,7 @@ public class VideoController {
     }
 
     @PostMapping("/videos")
+    @CacheEvict(value = "videos", allEntries = true)
     // @CrossOrigin(origins = "https://whatsgoodie.org")
     public ResponseEntity<Object> createVideo(@RequestBody Video body, @RequestParam String videoId) {
         System.out.println(body.toString());
@@ -55,7 +60,7 @@ public class VideoController {
     public void setBody(@RequestBody Video body, @RequestParam String videoId) {
         String response = proxy.getVideoDetails(videoId);
         JSONObject res = new JSONObject(response);
-        
+
         body.setYoutubeID(res.getJSONArray("items").getJSONObject(0).getString("id"));
         body.setTitle(res.getJSONArray("items").getJSONObject(0).getJSONObject("snippet").getString("title"));
         body.setCreationDate(res.getJSONArray("items").getJSONObject(0).getJSONObject("snippet").getString("publishedAt"));
@@ -73,6 +78,7 @@ public class VideoController {
     }
 
     @PutMapping("/videos/{id}")
+    @CacheEvict(value = "videos", allEntries = true)
     // @CrossOrigin(origins = "https://whatsgoodie.org")
     public ResponseEntity<Object> updateVideo(@PathVariable long id, @RequestBody Video body, @RequestParam String videoId) {
         System.out.println(body.toString());
@@ -87,6 +93,7 @@ public class VideoController {
     }
 
     @DeleteMapping("/videos/{id}")
+    @CacheEvict(value = "videos", allEntries = true)
     // @CrossOrigin(origins = "https://whatsgoodie.org")
     public ResponseEntity<Object> deleteVideo(@PathVariable long id) {
         try {

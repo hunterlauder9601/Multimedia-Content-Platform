@@ -13,7 +13,7 @@ public class Audio {
     @Column(name = "url", nullable = false)
     private String url;
     private String title;
-    @Column(name = "description", length = 1000)
+    @Column(name = "description", length = 2000)
     private String description;
     private String author;
     private String creationDate;

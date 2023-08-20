@@ -22,7 +22,7 @@ public class Video {
     private String title;
     private String creationDate;
     private String author;
-    @Column(name = "description", length = 1000)
+    @Column(name = "description", length = 2000)
     private String description;
     private String length;
     private int viewCount;
