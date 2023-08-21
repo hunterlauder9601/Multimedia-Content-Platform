@@ -1,4 +1,4 @@
-To build and run the backend, execute the following:
+To build the backend image, execute the following:
 docker build -t backend:latest .
 
 REST APIs:
