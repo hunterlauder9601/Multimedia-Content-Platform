@@ -29,4 +29,4 @@ docker-compose up -d
 Open your preferred web browser and navigate to http://localhost/.
 
 ## Note:
-Unfortunately, the admin portal won't be accessible unless you create your own Firebase authentication account, create your own account, and then copy your Firebase web project configuration into the MediaWebApp-Frontend/src/firebase.js file. This can be done pretty easily; however, for demonstration purposes of this component, you can alternatively watch the following video: https://www.youtube.com/watch?v=S98x9OiXmnA
+Unfortunately, the admin portal won't be accessible unless you create your own Firebase account, create your Firebase auth user account, and then copy your Firebase web project configuration into the MediaWebApp-Frontend/src/firebase.js file. Then rebuild with npm run build and replace the build in the root directory with this new build. This can be done pretty easily; however, for demonstration purposes of this component, you can alternatively watch the following video: https://www.youtube.com/watch?v=S98x9OiXmnA
