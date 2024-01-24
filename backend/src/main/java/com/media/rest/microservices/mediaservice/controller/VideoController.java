@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 public class VideoController {
@@ -29,7 +31,8 @@ public class VideoController {
     @Cacheable(value = "videos")
     // @CrossOrigin(origins = "https://whatsgoodie.org")
     public ResponseEntity<List<Video>> retrieveAllVideos() {
-        return ResponseEntity.ok(repository.findAll());
+        List<Video> videos = repository.findAll(Sort.by(Sort.Direction.ASC, "order"));
+        return ResponseEntity.ok(videos);
     }
 
     @GetMapping("/videos/{id}")
@@ -49,6 +52,16 @@ public class VideoController {
     public ResponseEntity<Object> createVideo(@RequestBody Video body, @RequestParam String videoId) {
         System.out.println(body.toString());
         setBody(body, videoId);
+
+        // Fetch the maximum order value from the repository
+        Integer maxOrder = repository.findMaxOrder();
+        if (maxOrder == null) {
+            maxOrder = 0;
+        }
+
+        // Set the new video's order
+        body.setOrder(maxOrder + 1);
+
         Video newVideo = repository.save(body);
         URI location  = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -86,10 +99,24 @@ public class VideoController {
         if(oldVideo.isPresent()) {
             setBody(body, videoId);
             body.setId(id);
+            body.setOrder(oldVideo.get().getOrder());
             repository.save(body);
             return ResponseEntity.ok(body);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/videos/reorder")
+    @CacheEvict(value = "videos", allEntries = true)
+    public ResponseEntity<Object> reorderVideos(@RequestBody List<Long> videoIds) {
+        AtomicInteger order = new AtomicInteger(1);
+        for (Long videoId : videoIds) {
+            repository.findById(videoId).ifPresent(video -> {
+                video.setOrder(order.getAndIncrement());
+                repository.save(video);
+            });
+        }
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/videos/{id}")

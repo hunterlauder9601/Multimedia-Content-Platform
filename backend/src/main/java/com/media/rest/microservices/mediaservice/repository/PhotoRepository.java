@@ -1,12 +1,11 @@
 package com.media.rest.microservices.mediaservice.repository;
 
-import com.media.rest.microservices.mediaservice.bean.Audio;
+import com.media.rest.microservices.mediaservice.bean.Photo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface AudioRepository extends JpaRepository<Audio, Long> {
+public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
-    @Query("SELECT MAX(a.order) FROM Audio a")
+    @Query("SELECT MAX(p.order) FROM Photo p")
     Integer findMaxOrder();
-
 }

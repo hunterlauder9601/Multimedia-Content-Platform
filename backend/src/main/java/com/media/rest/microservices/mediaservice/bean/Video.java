@@ -22,18 +22,20 @@ public class Video {
     private String title;
     private String creationDate;
     private String author;
-    @Column(name = "description", length = 2000)
+    @Column(name = "description", length = 3000)
     private String description;
     private String length;
     private int viewCount;
     private int likeCount;
     private int commentCount;
     private String category;
+    @Column(name = "order_sequence")
+    private Integer order;
 
     public Video() {
     }
 
-    public Video(long id, String youtubeID, String title, String creationDate, String author, String description, String length, int viewCount, int likeCount, int commentCount, String category) {
+    public Video(long id, String youtubeID, String title, String creationDate, String author, String description, String length, int viewCount, int likeCount, int commentCount, String category, Integer order) {
         this.id = id;
         this.youtubeID = youtubeID;
         this.title = title;
@@ -44,7 +46,8 @@ public class Video {
         this.viewCount = viewCount;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
-	this.category = category;
+        this.category = category;
+        this.order = order;
     }
 
     public long getId() {
@@ -115,6 +118,7 @@ public class Video {
                 ", likeCount=" + likeCount +
                 ", commentCount=" + commentCount +
                 ", category='" + category + '\'' +
+                ", order=" + order +
                 '}';
     }
 
@@ -156,5 +160,13 @@ public class Video {
 
     public void setYoutubeID(String videoID) {
         this.youtubeID = videoID;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }

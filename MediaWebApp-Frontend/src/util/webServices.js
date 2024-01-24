@@ -3,12 +3,11 @@ import axios from "axios";
 const API_BASE_URL = "http://localhost";
 
 class WebServices {
+
+  // Video Controller
+  
   getVideos() {
     return axios.get(`${API_BASE_URL}/videos`);
-  }
-
-  getVideo(url) {
-    return axios.get(url);
   }
 
   postVideo(idToken, videoId, videoData) {
@@ -43,12 +42,20 @@ class WebServices {
     });
   }
 
-  getAudios() {
-    return axios.get(`${API_BASE_URL}/audios`);
+  reorderVideos(idToken, videoIds) {
+    return axios.put(`${API_BASE_URL}/videos/reorder`, videoIds, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        "Content-Type": "application/json",
+      },
+    });
   }
 
-  getAudio(url) {
-    return axios.get(url);
+
+  // Audio Controller
+
+  getAudios() {
+    return axios.get(`${API_BASE_URL}/audios`);
   }
 
   postAudio(idToken, audioData) {
@@ -73,6 +80,84 @@ class WebServices {
     return axios.delete(`${API_BASE_URL}/audios/${id}`, {
       headers: {
         Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  reorderAudios(idToken, audioIds) {
+    return axios.put(`${API_BASE_URL}/audios/reorder`, audioIds, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+
+  // S3 Controller
+
+  getSecureUrl(idToken) {
+    return axios.get(`${API_BASE_URL}/s3Url`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  uploadPhotoToS3(signedUrl, photo) {
+    return axios.put(signedUrl, photo, {
+      headers: {
+        "Content-Type": photo.type,
+      },
+    });
+  }
+
+  deleteS3Object(idToken, objectKey) {
+    return axios.delete(`${API_BASE_URL}/s3Url/${objectKey}`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  // Photo Controller
+
+  getPhotos() {
+    return axios.get(`${API_BASE_URL}/photos`);
+  }
+
+  postPhoto(idToken, photoData) {
+    return axios.post(`${API_BASE_URL}/photos`, photoData, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  updatePhoto(idToken, id, photoData) {
+    return axios.put(`${API_BASE_URL}/photos/${id}`, photoData, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  deletePhoto(idToken, id) {
+    return axios.delete(`${API_BASE_URL}/photos/${id}`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  reorderPhotos(idToken, photoIds) {
+    return axios.put(`${API_BASE_URL}/photos/reorder`, photoIds, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        "Content-Type": "application/json",
       },
     });
   }

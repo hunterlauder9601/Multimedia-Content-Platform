@@ -13,21 +13,24 @@ public class Audio {
     @Column(name = "url", nullable = false)
     private String url;
     private String title;
-    @Column(name = "description", length = 2000)
+    @Column(name = "description", length = 3000)
     private String description;
     private String author;
     private String creationDate;
+    @Column(name = "order_sequence")
+    private Integer order;
 
-    public Audio() {
-    }
-
-    public Audio(long id, String url, String title, String description, String author, String creationDate) {
+    public Audio(long id, String url, String title, String description, String author, String creationDate, Integer order) {
         this.id = id;
         this.url = url;
         this.title = title;
         this.description = description;
         this.author = author;
         this.creationDate = creationDate;
+        this.order = order;
+    }
+
+    public Audio() {
     }
 
     public long getId() {
@@ -78,6 +81,14 @@ public class Audio {
         this.creationDate = creationDate;
     }
 
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
     @Override
     public String toString() {
         return "Audio{" +
@@ -87,7 +98,7 @@ public class Audio {
                 ", description='" + description + '\'' +
                 ", author='" + author + '\'' +
                 ", creationDate='" + creationDate + '\'' +
+                ", order=" + order +
                 '}';
     }
-
 }

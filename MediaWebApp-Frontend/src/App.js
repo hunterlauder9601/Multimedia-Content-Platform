@@ -2,7 +2,7 @@ import { lazy, Suspense, useState } from "react";
 import { NavBar } from "./components/NavBar";
 import { Footer } from "./components/Footer";
 import { Route, Routes } from "react-router-dom";
-import SuspenseLoading from "./components/SuspenseLoading";
+import SuspenseLoading from "./components/Loading";
 import { useLocation } from "react-router-dom";
 
 const Videos = lazy(() => import("./pages/Videos"));
@@ -21,13 +21,19 @@ function App() {
 
   return (
     <>
-      {(location.pathname !== "/admin") && 
+      {location.pathname !== "/admin" &&
       ((location.pathname !== "/video" && location.pathname !== "/photo") ||
-      (location.pathname === "/video" && !player) ||
-      (location.pathname === "/photo" && selectedPhotoIndex === null)) ? (
+        (location.pathname === "/video" && !player) ||
+        (location.pathname === "/photo" && selectedPhotoIndex === null)) ? (
         <NavBar />
       ) : null}
-      <Suspense fallback={<SuspenseLoading />}>
+      <Suspense
+        fallback={
+          <div className="w-full h-[calc(100vh-43px)] bg-zinc-900 flex items-center justify-center">
+            <SuspenseLoading />
+          </div>
+        }
+      >
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />

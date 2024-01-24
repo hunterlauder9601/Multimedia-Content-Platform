@@ -1,2 +1,2 @@
 # MediaWebApp-Frontend
-React app frontend for media portfolio web application
+React app frontend for multi-media web application

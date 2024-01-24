@@ -5,12 +5,15 @@ import webServices from "../util/webServices";
 import { Video } from "../components/Video";
 import { YouTube } from "../components/YouTube";
 import { HiX } from "react-icons/hi";
+import Loading from "../components/Loading";
 
 export default function Videos({ player, setPlayer }) {
   const [videosDetails, setVideosDetails] = useState([]);
   const [selectedId, setSelectedId] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setFilter] = useState("all");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   //fix go back button bug
   const location = useLocation();
 
@@ -19,10 +22,17 @@ export default function Videos({ player, setPlayer }) {
   }, [location, setPlayer]);
 
   useEffect(() => {
-    webServices.getVideos().then((response) => {
-      setVideosDetails(response.data);
-      // console.log(response.data);
-    });
+    const fetchVideos = async () => {
+      setIsLoading(true);
+      try {
+        const response = await webServices.getVideos();
+        setVideosDetails(response.data);
+      } catch (error) {
+        setError(error.message);
+      }
+      setIsLoading(false);
+    };
+    fetchVideos();
   }, []);
 
   const handleClick = (id) => {
@@ -107,14 +117,14 @@ export default function Videos({ player, setPlayer }) {
             </button>
 
             <button
-              onClick={() => setFilter("interviews")}
+              onClick={() => setFilter("freelance")}
               className={`${
-                selectedFilter === "interviews"
+                selectedFilter === "freelance"
                   ? "bg-white text-black"
                   : "bg-zinc-700 text-white hover:bg-zinc-600"
               } px-4 py-2 rounded-xl duration-200 ease-linear shadow-md`}
             >
-              Interviews
+              Freelance
             </button>
 
             <button
@@ -129,10 +139,17 @@ export default function Videos({ player, setPlayer }) {
             </button>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-          {videoArray}
-        </div>
+        {isLoading ? (
+          <div className="w-full flex justify-center">
+            <Loading />
+          </div>
+        ) : error ? (
+          <div className="w-full flex justify-center text-lg">{error}</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+            {videoArray}
+          </div>
+        )}
       </div>
 
       {/* Player Popup */}

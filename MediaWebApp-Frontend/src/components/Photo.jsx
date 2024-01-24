@@ -2,7 +2,7 @@ const Photo = ({ setSelectedPhotoIndex, index, url, title }) => {
   return (
     <div
       onClick={() => setSelectedPhotoIndex(index)}
-      className="bg-gray-800 hover:scale-110 duration-200 ease-in shadow-xl group cursor-pointer rounded-md"
+      className="bg-gray-800 hover:scale-105 duration-200 ease-in shadow-xl group cursor-pointer rounded-md"
     >
       <div
         className="overflow-auto bg-scroll bg-cover bg-center bg-no-repeat w-full aspect-video

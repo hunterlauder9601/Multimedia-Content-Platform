@@ -1,15 +1,26 @@
 import { useState, useEffect } from "react";
 import { AudioClip } from "../components/AudioClip";
 import webServices from "../util/webServices";
+import Loading from "../components/Loading";
 
 export default function Radio() {
   const [audiosDetails, setAudiosDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    webServices.getAudios().then((response) => {
-      setAudiosDetails(response.data);
-    });
+    const fetchClips = async () => {
+      setIsLoading(true);
+      try {
+        const response = await webServices.getAudios();
+        setAudiosDetails(response.data);
+      } catch (error) {
+        setError(error.message);
+      }
+      setIsLoading(false);
+    };
+    fetchClips();
   }, []);
 
   const filteredClips = audiosDetails.filter((clip) =>
@@ -42,7 +53,15 @@ export default function Radio() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="bg-zinc-800 text-white w-full px-4 py-2 rounded-md mb-2 shadow-md"
         />
-        {audioArray}
+        {isLoading ? (
+          <div className="w-full flex justify-center">
+            <Loading />
+          </div>
+        ) : error ? (
+          <div className="w-full flex justify-center text-lg">{error}</div>
+        ) : (
+          audioArray
+        )}
       </div>
     </div>
   );

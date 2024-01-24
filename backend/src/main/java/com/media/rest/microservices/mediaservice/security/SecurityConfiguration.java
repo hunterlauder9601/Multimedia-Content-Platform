@@ -15,7 +15,7 @@ public class SecurityConfiguration {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers(HttpMethod.GET, "/videos/**", "/audios/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/videos/**", "/audios/**", "/photos/**").permitAll()
 						.anyRequest().authenticated()
 				)
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
