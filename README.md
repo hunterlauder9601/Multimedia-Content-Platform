@@ -2,6 +2,8 @@
 
 ## Description
 The "Multimedia Content Platform" is a client-commissioned freelance project, developed for the brand "WhatsGoodie". This comprehensive web application is designed for showcasing diverse media content. It features work from YouTube and Soundcloud, along with a unique section for photography uploads. Tailored to the brand's image and vision, this platform enhances the visibility and accessibility of various media forms, offering a seamless user experience for content creators and consumers.
+* Live Site: https://whatsgoodie.org/
+* Admin Demo: https://www.youtube.com/watch?v=riCD1jXMETs
 
 ## Why?
 This platform addresses the need for a unified and interactive space where different types of media content, including videos, audio, and photography, converge. The goal is to provide an intuitive and user-friendly environment for showcasing and exploring creative works, bridging the gap between content creators and their audiences, all under the "WhatsGoodie" brand umbrella.
