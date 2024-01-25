@@ -4,7 +4,7 @@
 The "Multimedia Content Platform" is a client-commissioned freelance project, developed for the brand "WhatsGoodie". This comprehensive web application is designed for showcasing diverse media content. It features work from YouTube and Soundcloud, along with a unique section for photography uploads. Tailored to the brand's image and vision, this platform enhances the visibility and accessibility of various media forms, offering a seamless user experience for content creators and consumers.
 
 ## Why?
-This platform addresses the need for a unified and interactive space where different types of media content, including videos, music, and photography, converge. The goal is to provide an intuitive and user-friendly environment for showcasing and exploring creative works, bridging the gap between content creators and their audiences, all under the "WhatsGoodie" brand umbrella.
+This platform addresses the need for a unified and interactive space where different types of media content, including videos, audio, and photography, converge. The goal is to provide an intuitive and user-friendly environment for showcasing and exploring creative works, bridging the gap between content creators and their audiences, all under the "WhatsGoodie" brand umbrella.
 
 ## Quick Start
 
@@ -31,7 +31,6 @@ This platform addresses the need for a unified and interactive space where diffe
 * Rebuild with `npm run build` and replace the build in the root directory.
 * Remove the old nginx container and execute `docker-compose up -d` again.
 * Access the admin portal at `http://localhost/admin`.
-* For a demonstration, watch this video: https://www.youtube.com/watch?v=S98x9OiXmnA
 
 ### Configuring AWS S3 for Photography Uploads
 * Create an AWS S3 Bucket with the name "wg-photo-bucket".
@@ -54,19 +53,14 @@ This platform addresses the need for a unified and interactive space where diffe
 ```
 * Set the CORS configuration as follows:
 ```
-  {
-      "Version": "2012-10-17",
-      "Id": "Policy1705976450171",
-      "Statement": [
-          {
-              "Sid": "Stmt1705976443932",
-              "Effect": "Allow",
-              "Principal": "*",
-              "Action": "s3:GetObject",
-              "Resource": "arn:aws:s3:::wg-photo-bucket/*"
-          }
-      ]
-  }
+[
+    {
+        "AllowedHeaders": ["*"],
+        "AllowedMethods": ["PUT", "HEAD", "GET"],
+        "AllowedOrigins": ["*"],
+        "ExposeHeaders": []
+    }
+]
 ```
 * Create an IAM policy with the following configuration:
 ```
