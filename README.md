@@ -29,7 +29,7 @@ This platform addresses the need for a unified and interactive space where diffe
 
 ### Setting Up the Admin Portal
 * Create your Firebase account and Firebase auth user account.
-* Copy your Firebase web project configuration into `MediaWebApp-Frontend/src/util/firebase.js`.
+* Copy your Firebase web project configuration into `frontend-src/src/util/firebase.js`.
 * Rebuild with `npm run build` and replace the build in the root directory.
 * Remove the old nginx container and execute `docker-compose up -d` again.
 * Access the admin portal at `http://localhost/admin`.
